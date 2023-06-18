@@ -4,8 +4,11 @@ import Input from "./components/Input"
 export default function App() {
 
   const [password, setPassword] = useState("")
-  const [passwordSize, setPasswordSize] = useState(12)
+  const [customSize, setCustomSize] = useState(12)
+  const [showInput, setShowInput] = useState(false)
   const [copyText, setCopyText] = useState("Copiar")
+
+  const passwordSize = showInput ? customSize: 8
 
   function generate() {
     const characters = "'1234567890-=!@#$%¨&*()_+qwertyuiop[asdfghjklç~]zxcvbnm,.;/QWERTYUIOP{ASDFGHJKLÇ^}ZXCVBNM<>:?"
@@ -27,10 +30,16 @@ export default function App() {
     <div>
       <h1>Gerador de senha</h1>
       <div>
-        <label htmlFor="passwordSize">Tamanho: </label>
-        <Input password={passwordSize} setPasswordSize={setPasswordSize} />
+        <label htmlFor="showInput">Customizar tamanho: </label>
+        <input type="checkbox" id="showInput" value={showInput} onChange={() => setShowInput(show => !show)} />
       </div>
-      <button onClick={generate}>Gerar senha de {passwordSize} caracteres</button>
+      {showInput  && (
+        <div>
+          <label htmlFor="customSize">Tamanho: </label>
+          <Input password={customSize} setPasswordSize={setCustomSize} />
+        </div>
+      )}
+      <button onClick={generate}>Gerar senha de {showInput ? passwordSize : 8} caracteres</button>
 			<button onClick={copyToClipboard}>{copyText}</button>
       <div>{password}</div>
     </div>
